@@ -9,10 +9,10 @@
 #import "MainViewController.h"
 #import "YelpClient.h"
 
-NSString * const kYelpConsumerKey = @"vxKwwcR_NMQ7WaEiQBK_CA";
-NSString * const kYelpConsumerSecret = @"33QCvh5bIF5jIHR5klQr7RtBDhQ";
-NSString * const kYelpToken = @"uRcRswHFYa1VkDrGV6LAW2F8clGh5JHV";
-NSString * const kYelpTokenSecret = @"mqtKIxMIR4iBtBPZCmCLEb-Dz3Y";
+NSString * const kYelpConsumerKey = @"DB6QCDtQLZI-ErPThGa4vw";
+NSString * const kYelpConsumerSecret = @"7s-4EhTFdtRksOzYMBpdVMU4gZo";
+NSString * const kYelpToken = @"C-jE7n1NLpCXxV1LbIpikQkuFDx5DYig";
+NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
 @interface MainViewController ()
 
