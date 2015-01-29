@@ -22,9 +22,17 @@
         self.categories = [categoryNames componentsJoinedByString:@", "];
         self.name = dictionary[@"name"];
         self.imageUrl = dictionary[@"image_url"];
-        NSString *street = [dictionary valueForKeyPath:@"location.address"][0];
-        NSString *neighborhood = [dictionary valueForKeyPath:@"location.neighborhoods"][0];
-        self.address = [NSString stringWithFormat:@"%@, %@", street, neighborhood];
+        
+        NSMutableArray *addressArray = [NSMutableArray array];
+        NSArray *streetArray = [dictionary valueForKeyPath:@"location.address"];
+        if (streetArray.count > 0) {
+            [addressArray addObject:streetArray[0]];
+        }
+        NSArray *neighborhoodArray = [dictionary valueForKeyPath:@"location.neighborhoods"];
+        if (neighborhoodArray.count > 0) {
+            [addressArray addObject:neighborhoodArray[0]];
+        }
+        self.address = [addressArray componentsJoinedByString:@", "];
         self.numReviews = [dictionary[@"review_count"] integerValue];
         self.ratingsImageUrl = dictionary[@"rating_img_url"];
         float milesPerMeter = 0.000621371;
