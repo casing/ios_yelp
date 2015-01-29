@@ -17,13 +17,18 @@ NSString * const kYelpConsumerSecret = @"7s-4EhTFdtRksOzYMBpdVMU4gZo";
 NSString * const kYelpToken = @"C-jE7n1NLpCXxV1LbIpikQkuFDx5DYig";
 NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSArray *businesses;
+@property (nonatomic, strong) NSMutableArray *searchedBusinesses;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 - (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params;
+- (NSUInteger)getBusinessessCount;
+- (Business *)getBusiness:(int)index;
+- (void)searchBusinessData;
 
 @end
 
@@ -58,6 +63,10 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(onFilterButton)];
+    self.searchBar = [UISearchBar new];
+    self.searchBar.delegate = self;
+    [self.searchBar sizeToFit];
+    self.navigationItem.titleView = self.searchBar;
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,24 +75,61 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - TableView Methods
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.businesses.count;
+    return [self getBusinessessCount];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BusinessCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BusinessCell"];
-    cell.business = self.businesses[indexPath.row];
+    cell.business = [self getBusiness:(int)indexPath.row];
     return cell;
 }
 
 #pragma mark - FiltersViewControllerDelegate methods
+
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
     
     [self fetchBusinessesWithQuery:@"Restaurants" params:filters];
     
 }
 
+#pragma mark - SearchBar Methods
+
+- (void) searchBusinessData {
+    [self.searchedBusinesses removeAllObjects];
+    // TODO: We need to add a proper filtering for a list of Business Objects
+    NSPredicate *namePredicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@", self.searchBar.text];
+    NSPredicate *addressPredicate = [NSPredicate predicateWithFormat:@"SELF.address contains[c] %@", self.searchBar.text];
+    NSPredicate *categoriesPredicate = [NSPredicate predicateWithFormat:@"SELF.categories contains[c] %@", self.searchBar.text];
+    NSArray *predicates = [NSArray arrayWithObjects:namePredicate, addressPredicate, categoriesPredicate, nil];
+    NSPredicate *predicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
+    self.searchedBusinesses = [NSMutableArray arrayWithArray:[self.businesses filteredArrayUsingPredicate:predicate]];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self searchBusinessData];
+    [self.tableView reloadData];
+}
+
 #pragma mark - Private methods
+
+- (NSUInteger)getBusinessessCount {
+    if ([self.searchBar.text length] == 0) {
+        return self.businesses.count;
+    } else {
+        return self.searchedBusinesses.count;
+    }
+}
+
+- (Business *)getBusiness:(int)index {
+    if ([self.searchBar.text length] == 0) {
+        return self.businesses[index];
+    } else {
+        return self.searchedBusinesses[index];
+    }
+}
 
 - (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params {
     [self.client searchWithTerm:query params:params success:^(AFHTTPRequestOperation *operation, id response) {
