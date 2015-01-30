@@ -52,10 +52,10 @@
                                                                             target:self
                                                                             action:@selector(onCancelButton)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apply"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Search"
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
-                                                                             action:@selector(onApplyButton)];
+                                                                             action:@selector(onSearchButton)];
     
     // TableView Setup
     self.tableView.dataSource = self;
@@ -202,7 +202,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)onApplyButton {
+- (void)onSearchButton {
     [self.delegate filtersViewController:self didChangeFilters:self.filters];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
