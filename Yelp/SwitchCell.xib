@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VJ7-Xu-3gu">
-                        <rect key="frame" x="8" y="11" width="42" height="21"/>
+                        <rect key="frame" x="24" y="11" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -31,7 +31,7 @@
                     <constraint firstItem="VJ7-Xu-3gu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="86N-gr-vdy"/>
                     <constraint firstItem="BJJ-nS-kVY" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="UZX-P4-CH7"/>
                     <constraint firstItem="VJ7-Xu-3gu" firstAttribute="centerY" secondItem="BJJ-nS-kVY" secondAttribute="centerY" id="cqC-By-WdS"/>
-                    <constraint firstItem="VJ7-Xu-3gu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="lr2-84-cuR"/>
+                    <constraint firstItem="VJ7-Xu-3gu" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="lr2-84-cuR"/>
                     <constraint firstAttribute="trailing" secondItem="BJJ-nS-kVY" secondAttribute="trailing" constant="8" id="sAD-Lh-JWf"/>
                 </constraints>
             </tableViewCellContentView>

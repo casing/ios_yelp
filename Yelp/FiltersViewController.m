@@ -8,13 +8,19 @@
 
 #import "FiltersViewController.h"
 #import "SwitchCell.h"
+#import "SegmentedCell.h"
 
-@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate>
+@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, SegmentedCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, readonly) NSDictionary *filters;
-@property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSMutableSet *selectedCategories;
+@property (nonatomic, strong) NSArray *sectionTitles;
+
+@property (nonatomic, strong) NSArray *categories;
+@property (nonatomic) NSInteger distance;
+@property (nonatomic) NSInteger sortMode;
+@property (nonatomic) BOOL deal;
 
 - (void)initCategories;
 
@@ -26,6 +32,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if (self) {
+        self.distance = 0;
+        self.sortMode = -1;
         self.selectedCategories = [NSMutableSet set];
         [self initCategories];
     }
@@ -35,8 +43,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    // Setup Data structures
+    self.sectionTitles = @[@"Most Popular",@"Distance",@"Sort By",@"Category Filters"];
     
+    // Navigation Setup
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
@@ -47,10 +57,12 @@
                                                                              target:self
                                                                              action:@selector(onApplyButton)];
     
+    // TableView Setup
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"SegmentedCell" bundle:nil] forCellReuseIdentifier:@"SegmentedCell"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,27 +71,98 @@
 }
 
 #pragma mark - TableView Methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.sectionTitles.count;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.categories.count;
+    if (section == 3) {
+        return self.categories.count;
+    }
+    return 1;//Deals, Radius, Sort sections are one row
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.sectionTitles[section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
-    cell.titleLabel.text = self.categories[indexPath.row][@"name"];
-    cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
-    cell.delegate = self;
-    return cell;
+    switch (indexPath.section) {
+        case 0:
+        {
+            SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
+            cell.delegate = self;
+            cell.titleLabel.text = @"Offering a Deal";
+            cell.on = self.deal;
+            return cell;
+        }
+        case 1://Distance
+        {
+            SegmentedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SegmentedCell" forIndexPath:indexPath];
+            [cell.segmentedControl setTitle:@"5 KM" forSegmentAtIndex:0];
+            [cell.segmentedControl setTitle:@"25 KM" forSegmentAtIndex:1];
+            [cell.segmentedControl setTitle:@"40 KM" forSegmentAtIndex:2];
+            cell.delegate = self;
+            return cell;
+        }
+        case 2://Sort By
+        {
+            SegmentedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SegmentedCell" forIndexPath:indexPath];
+            [cell.segmentedControl setTitle:@"Best Match" forSegmentAtIndex:0];
+            [cell.segmentedControl setTitle:@"Distance" forSegmentAtIndex:1];
+            [cell.segmentedControl setTitle:@"Highest Rated" forSegmentAtIndex:2];
+            cell.delegate = self;
+            return cell;
+        }
+        case 3:
+        {
+            SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
+            cell.delegate = self;
+            cell.titleLabel.text = self.categories[indexPath.row][@"name"];
+            cell.on = [self.selectedCategories containsObject:self.categories[indexPath.row]];
+            return cell;
+        }
+        default:
+            break;
+    }
+    return nil;
 }
 
 #pragma mark - SwitchCellDelegate Methods
 - (void)switchCell:(SwitchCell *)switchCell didUpdateValue:(BOOL)value {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
-    if (value) {
-        [self.selectedCategories addObject:self.categories[indexPath.row]];
-    } else {
-        [self.selectedCategories removeObject:self.categories[indexPath.row]];
+    if (indexPath.section == 0) {
+        self.deal = value;
+    } else if (indexPath.section == 3) {
+        if (value) {
+            [self.selectedCategories addObject:self.categories[indexPath.row]];
+        } else {
+            [self.selectedCategories removeObject:self.categories[indexPath.row]];
+        }
+    }
+}
+
+#pragma mark - SegmentedCellDelegate Methods
+- (void)segmentedCell:(SegmentedCell *)segmentedCell didValueChanged:(int)index {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:segmentedCell];
+    if (indexPath.section == 1) { //Distance
+        switch (index) {
+            case 0:
+                self.distance = 5000; //5 KM
+                break;
+            case 1:
+                self.distance = 25000; //25 KM
+                break;
+            case 2:
+                self.distance = 40000; //40 KM
+                break;
+            default:
+                self.distance = 0;
+                break;
+        }
+    } else if (indexPath.section == 2) { //Sort By
+        self.sortMode = index;
     }
 }
 
@@ -87,6 +170,22 @@
 - (NSDictionary *)filters {
     NSMutableDictionary *filters = [NSMutableDictionary dictionary];
     
+    // Deals
+    if (self.deal) {
+        [filters setObject:@NO forKey:@"deals_filter"];
+    }
+    
+    // Distance
+    if (self.distance > 0) {
+        [filters setObject:[NSNumber numberWithInt:(int)self.distance] forKey:@"radius_filter"];
+    }
+    
+    // Sort
+    if (self.sortMode >= 0) {
+        [filters setObject:[NSNumber numberWithInt:(int)self.sortMode] forKey:@"sort"];
+    }
+    
+    // Filter Categories
     if (self.selectedCategories.count > 0) {
         NSMutableArray *codes = [NSMutableArray array];
         for (NSDictionary *category in self.selectedCategories) {

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="46" id="KGk-i7-Jjw" customClass="SegmentedCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="7Ho-hs-wW1">
+                        <rect key="frame" x="8" y="8" width="304" height="30.5"/>
+                        <segments>
+                            <segment title="Best Match"/>
+                            <segment title="Distance"/>
+                            <segment title="Highest Rated"/>
+                        </segments>
+                        <connections>
+                            <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="zq7-ew-ddg"/>
+                        </connections>
+                    </segmentedControl>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="7Ho-hs-wW1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="Fbl-p6-Zqa"/>
+                    <constraint firstItem="7Ho-hs-wW1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Hsk-MQ-X7c"/>
+                    <constraint firstAttribute="bottom" secondItem="7Ho-hs-wW1" secondAttribute="bottom" constant="8" id="ZC4-pF-hUS"/>
+                    <constraint firstAttribute="trailing" secondItem="7Ho-hs-wW1" secondAttribute="trailing" constant="8" id="vgJ-Ej-mzu"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="segmentedControl" destination="7Ho-hs-wW1" id="5e3-Zo-a8A"/>
+            </connections>
+            <point key="canvasLocation" x="500" y="239"/>
+        </tableViewCell>
+    </objects>
+</document>
