@@ -22,6 +22,7 @@
 
 - (AFHTTPRequestOperation *)searchWithTerm:(NSString *)term
                                     params:(NSDictionary *)params
+                                    offset:(int)offset
                                    success:(void (^)(AFHTTPRequestOperation *operation, id response))success
                                    failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     
@@ -31,7 +32,7 @@
     if (params) {
         [allParameters addEntriesFromDictionary:params];
     }
-    
+    [allParameters setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
     return [self GET:@"search" parameters:allParameters success:success failure:failure];
 }
 

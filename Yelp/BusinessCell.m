@@ -44,7 +44,7 @@
     _business = business;
     
     [self.thumbnailView setImageWithURL:[NSURL URLWithString:self.business.imageUrl]];
-    self.nameLabel.text = self.business.name;
+    self.nameLabel.text = [NSString stringWithFormat:@"%ld. %@", self.cellNumber, self.business.name];
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
     [self.ratingsImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl]];
     self.ratingLabel.text = [NSString stringWithFormat:@"%ld Reviews", self.business.numReviews];

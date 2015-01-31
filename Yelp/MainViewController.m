@@ -21,13 +21,13 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) YelpClient *client;
-@property (nonatomic, strong) NSArray *businesses;
+@property (nonatomic, strong) NSMutableArray *businesses;
 @property (nonatomic, strong) NSMutableArray *searchedBusinesses;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIRefreshControl *tableRefreshControl;
-@property (nonatomic, strong) NSDictionary *filters;
+@property (nonatomic, strong) NSMutableDictionary *filters;
 
-- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params;
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params offset:(int)offset;
 - (NSUInteger)getBusinessessCount;
 - (Business *)getBusiness:(int)index;
 - (void)searchBusinessData;
@@ -43,7 +43,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
         // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
         self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
         
-        [self fetchBusinessesWithQuery:@"Restaurants" params:nil];
+        [self fetchBusinessesWithQuery:@"Restaurants" params:nil offset:0];
     }
     return self;
 }
@@ -51,7 +51,9 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    // Setup Data Structures
+    self.businesses = [[NSMutableArray alloc] init];
+    self.filters = [[NSMutableDictionary alloc] init];
     
     // Table Refresh control
     self.tableRefreshControl = [[UIRefreshControl alloc] init];
@@ -87,7 +89,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 #pragma mark - RefreshControl
 - (void)onTableRefresh {
     
-    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters];
+    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:0];
 }
 
 #pragma mark - TableView Methods
@@ -97,7 +99,15 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // We are displaying last row
+    if (indexPath.row == ([self getBusinessessCount] - 1)) {
+        [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:(int)self.businesses.count];
+        [self searchBusinessData];
+    }
+    
     BusinessCell *cell = [tableView dequeueReusableCellWithIdentifier:@"BusinessCell"];
+    cell.cellNumber = indexPath.row + 1;
     cell.business = [self getBusiness:(int)indexPath.row];
     return cell;
 }
@@ -106,8 +116,8 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
     
-    self.filters = filters;
-    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters];
+    [self.filters addEntriesFromDictionary:filters];
+    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:0];
     
 }
 
@@ -147,11 +157,16 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     }
 }
 
-- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params {
-    [self.client searchWithTerm:query params:params success:^(AFHTTPRequestOperation *operation, id response) {
+- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params offset:(int)offset {
+    [self.client searchWithTerm:query params:params offset:offset success:^(AFHTTPRequestOperation *operation, id response) {
         NSLog(@"response: %@", response);
         NSArray *businessDictionaries = response[@"businesses"];
-        self.businesses = [Business businessesWithDictionaries:businessDictionaries];
+        
+        if (offset == 0) {
+            [self.businesses removeAllObjects];
+        }
+        
+        [self.businesses addObjectsFromArray:[Business businessesWithDictionaries:businessDictionaries]];
         [self.tableRefreshControl endRefreshing];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
