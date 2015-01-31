@@ -27,7 +27,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 @property (nonatomic, strong) UIRefreshControl *tableRefreshControl;
 @property (nonatomic, strong) NSMutableDictionary *filters;
 
-- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params offset:(int)offset;
+- (void)fetchBusinessesWithParams:(NSDictionary *)params offset:(int)offset;
 - (NSUInteger)getBusinessessCount;
 - (Business *)getBusiness:(int)index;
 - (void)searchBusinessData;
@@ -43,7 +43,15 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
         // You can register for Yelp API keys here: http://www.yelp.com/developers/manage_api_keys
         self.client = [[YelpClient alloc] initWithConsumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret accessToken:kYelpToken accessSecret:kYelpTokenSecret];
         
-        [self fetchBusinessesWithQuery:@"Restaurants" params:nil offset:0];
+        // Setup Data Structures
+        self.businesses = [[NSMutableArray alloc] init];
+        self.filters = [[NSMutableDictionary alloc] init];
+        
+        // Setup default filter
+        [self.filters setObject:@"restaurants" forKey:@"term"];
+        
+        // Fetch initial Business list
+        [self fetchBusinessesWithParams:self.filters offset:0];
     }
     return self;
 }
@@ -51,9 +59,6 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Setup Data Structures
-    self.businesses = [[NSMutableArray alloc] init];
-    self.filters = [[NSMutableDictionary alloc] init];
     
     // Table Refresh control
     self.tableRefreshControl = [[UIRefreshControl alloc] init];
@@ -89,7 +94,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 #pragma mark - RefreshControl
 - (void)onTableRefresh {
     
-    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:0];
+    [self fetchBusinessesWithParams:self.filters offset:0];
 }
 
 #pragma mark - TableView Methods
@@ -102,7 +107,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     
     // We are displaying last row
     if (indexPath.row == ([self getBusinessessCount] - 1)) {
-        [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:(int)self.businesses.count];
+        [self fetchBusinessesWithParams:self.filters offset:(int)self.businesses.count];
         [self searchBusinessData];
     }
     
@@ -117,7 +122,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
     
     [self.filters addEntriesFromDictionary:filters];
-    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters offset:0];
+    [self fetchBusinessesWithParams:self.filters offset:0];
     
 }
 
@@ -157,8 +162,8 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     }
 }
 
-- (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params offset:(int)offset {
-    [self.client searchWithTerm:query params:params offset:offset success:^(AFHTTPRequestOperation *operation, id response) {
+- (void)fetchBusinessesWithParams:(NSDictionary *)params offset:(int)offset {
+    [self.client searchWithParams:params offset:offset success:^(AFHTTPRequestOperation *operation, id response) {
         NSLog(@"response: %@", response);
         NSArray *businessDictionaries = response[@"businesses"];
         
