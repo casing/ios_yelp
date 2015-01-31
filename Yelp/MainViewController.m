@@ -24,6 +24,8 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 @property (nonatomic, strong) NSArray *businesses;
 @property (nonatomic, strong) NSMutableArray *searchedBusinesses;
 @property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UIRefreshControl *tableRefreshControl;
+@property (nonatomic, strong) NSDictionary *filters;
 
 - (void)fetchBusinessesWithQuery:(NSString *)query params:(NSDictionary *)params;
 - (NSUInteger)getBusinessessCount;
@@ -50,19 +52,26 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    // Table Refresh control
+    self.tableRefreshControl = [[UIRefreshControl alloc] init];
+    [self.tableRefreshControl addTarget:self action:@selector(onTableRefresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.tableRefreshControl atIndex:0];
+    
+    // TableView Setup
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"BusinessCell" bundle:nil] forCellReuseIdentifier:@"BusinessCell"];
-    
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
+    // Setup up title
     self.title = @"Yelp";
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filters"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(onFilterButton)];
+    
+    // UI SearchBar Setup
     self.searchBar = [UISearchBar new];
     self.searchBar.delegate = self;
     [self.searchBar sizeToFit];
@@ -73,6 +82,12 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - RefreshControl
+- (void)onTableRefresh {
+    
+    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters];
 }
 
 #pragma mark - TableView Methods
@@ -91,7 +106,8 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
     
-    [self fetchBusinessesWithQuery:@"Restaurants" params:filters];
+    self.filters = filters;
+    [self fetchBusinessesWithQuery:@"Restaurants" params:self.filters];
     
 }
 
@@ -136,6 +152,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
         NSLog(@"response: %@", response);
         NSArray *businessDictionaries = response[@"businesses"];
         self.businesses = [Business businessesWithDictionaries:businessDictionaries];
+        [self.tableRefreshControl endRefreshing];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@", [error description]);
