@@ -9,6 +9,7 @@
 #import "FiltersViewController.h"
 #import "SwitchCell.h"
 #import "SegmentedCell.h"
+#import "SeeAllCell.h"
 
 @interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, SegmentedCellDelegate>
 
@@ -23,11 +24,14 @@
 @property (nonatomic) NSInteger sortMode;
 @property (nonatomic) BOOL deal;
 @property (nonatomic) NSInteger categoryIndex;
+@property (nonatomic) BOOL seeAll;
 
 - (void)initCategories;
 - (void)initCategoryFilters;
 
 @end
+
+static NSInteger SEE_ALL_SIZE = 4;
 
 @implementation FiltersViewController
 
@@ -38,6 +42,7 @@
         self.distance = 0;
         self.sortMode = -1;
         self.categoryIndex = 0;
+        self.seeAll = false;
         self.selectedCategories = [NSMutableSet set];
         [self initCategories];
         [self initCategoryFilters];
@@ -68,6 +73,7 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"SegmentedCell" bundle:nil] forCellReuseIdentifier:@"SegmentedCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"SeeAllCell" bundle:nil] forCellReuseIdentifier:@"SeeAllCell"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,8 +96,12 @@
             return self.categories.count;
         case 4:
         {
-            NSArray *array = self.categoryFilters[self.categoryIndex];
-            return array.count;
+            if (self.seeAll) {
+                NSArray *array = self.categoryFilters[self.categoryIndex];
+                return array.count;
+            } else {
+                return SEE_ALL_SIZE;//See All only shows 4 cells including the SeeAllCell
+            }
         }
         default:
             return 1;
@@ -141,17 +151,29 @@
         }
         case 4://Category Filters
         {
-            SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
-            cell.delegate = self;
-            NSArray *categoryFilterArray = self.categoryFilters[self.categoryIndex];
-            cell.titleLabel.text = categoryFilterArray[indexPath.row][@"name"];
-            cell.on = [self.selectedCategories containsObject:categoryFilterArray[indexPath.row]];
-            return cell;
+            if (!self.seeAll && indexPath.row == (SEE_ALL_SIZE-1)) {
+                SeeAllCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SeeAllCell" forIndexPath:indexPath];
+                return cell;
+            } else {
+                SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
+                cell.delegate = self;
+                NSArray *categoryFilterArray = self.categoryFilters[self.categoryIndex];
+                cell.titleLabel.text = categoryFilterArray[indexPath.row][@"name"];
+                cell.on = [self.selectedCategories containsObject:categoryFilterArray[indexPath.row]];
+                return cell;
+            }
         }
         default:
             break;
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 4 && !self.seeAll && indexPath.row == (SEE_ALL_SIZE-1)) {
+        self.seeAll = YES;
+        [tableView reloadData];
+    }
 }
 
 #pragma mark - SwitchCellDelegate Methods

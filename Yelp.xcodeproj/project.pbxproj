@@ -19,6 +19,8 @@
 		3EE25BB21A7DA04000D1431C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE25BB11A7DA04000D1431C /* MapKit.framework */; };
 		3EE25BB61A7DB8DA00D1431C /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE25BB41A7DB8DA00D1431C /* DetailViewController.m */; };
 		3EE25BB71A7DB8DA00D1431C /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE25BB51A7DB8DA00D1431C /* DetailViewController.xib */; };
+		3EE25BBB1A7ED11F00D1431C /* SeeAllCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE25BB91A7ED11F00D1431C /* SeeAllCell.m */; };
+		3EE25BBC1A7ED11F00D1431C /* SeeAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE25BBA1A7ED11F00D1431C /* SeeAllCell.xib */; };
 		420474F618DC299500E88E07 /* YelpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F518DC299500E88E07 /* YelpClient.m */; };
 		420474FB18DC2B2100E88E07 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F918DC2B2100E88E07 /* MainViewController.m */; };
 		420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 420474FA18DC2B2100E88E07 /* MainViewController.xib */; };
@@ -66,6 +68,9 @@
 		3EE25BB31A7DB8DA00D1431C /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		3EE25BB41A7DB8DA00D1431C /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		3EE25BB51A7DB8DA00D1431C /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
+		3EE25BB81A7ED11F00D1431C /* SeeAllCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeeAllCell.h; sourceTree = "<group>"; };
+		3EE25BB91A7ED11F00D1431C /* SeeAllCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeeAllCell.m; sourceTree = "<group>"; };
+		3EE25BBA1A7ED11F00D1431C /* SeeAllCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SeeAllCell.xib; sourceTree = "<group>"; };
 		420474F418DC299500E88E07 /* YelpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpClient.h; sourceTree = "<group>"; };
 		420474F518DC299500E88E07 /* YelpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpClient.m; sourceTree = "<group>"; };
 		420474F818DC2B2100E88E07 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -138,6 +143,9 @@
 				3E9A032E1A7B609A00F0EBF2 /* SegmentedCell.h */,
 				3E9A032F1A7B609A00F0EBF2 /* SegmentedCell.m */,
 				3E9A03301A7B609A00F0EBF2 /* SegmentedCell.xib */,
+				3EE25BB81A7ED11F00D1431C /* SeeAllCell.h */,
+				3EE25BB91A7ED11F00D1431C /* SeeAllCell.m */,
+				3EE25BBA1A7ED11F00D1431C /* SeeAllCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -324,6 +332,7 @@
 				42FD6C5518DC286B000BF2B9 /* InfoPlist.strings in Resources */,
 				3E3DD7861A79506100B69096 /* BusinessCell.xib in Resources */,
 				3E3DD78B1A79F05600B69096 /* FiltersViewController.xib in Resources */,
+				3EE25BBC1A7ED11F00D1431C /* SeeAllCell.xib in Resources */,
 				3EE25BB71A7DB8DA00D1431C /* DetailViewController.xib in Resources */,
 				420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */,
 				3E9A03321A7B609A00F0EBF2 /* SegmentedCell.xib in Resources */,
@@ -383,6 +392,7 @@
 				3E3DD78A1A79F05600B69096 /* FiltersViewController.m in Sources */,
 				3E3DD7941A79F85600B69096 /* SwitchCell.m in Sources */,
 				3E9A03311A7B609A00F0EBF2 /* SegmentedCell.m in Sources */,
+				3EE25BBB1A7ED11F00D1431C /* SeeAllCell.m in Sources */,
 				3E3DD7801A7948B700B69096 /* Business.m in Sources */,
 				42FD6C5B18DC286B000BF2B9 /* AppDelegate.m in Sources */,
 				3EE25BB61A7DB8DA00D1431C /* DetailViewController.m in Sources */,
