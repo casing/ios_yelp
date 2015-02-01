@@ -23,16 +23,17 @@
         self.name = dictionary[@"name"];
         self.imageUrl = dictionary[@"image_url"];
         
-        NSMutableArray *addressArray = [NSMutableArray array];
         NSArray *streetArray = [dictionary valueForKeyPath:@"location.address"];
-        if (streetArray.count > 0) {
-            [addressArray addObject:streetArray[0]];
+        if (streetArray.count != 0) {
+            self.address = streetArray[0];
         }
         NSArray *neighborhoodArray = [dictionary valueForKeyPath:@"location.neighborhoods"];
-        if (neighborhoodArray.count > 0) {
-            [addressArray addObject:neighborhoodArray[0]];
+        if (neighborhoodArray.count != 0) {
+            self.neighborhoods = neighborhoodArray[0];
         }
-        self.address = [addressArray componentsJoinedByString:@", "];
+        self.city = [dictionary valueForKeyPath:@"location.city"];
+        self.stateCode = [dictionary valueForKeyPath:@"location.state_code"];
+        
         self.numReviews = [dictionary[@"review_count"] integerValue];
         self.ratingsImageUrl = dictionary[@"rating_img_url"];
         float milesPerMeter = 0.000621371;
@@ -41,7 +42,11 @@
         CLLocationCoordinate2D coordinate;
         coordinate.latitude = [[dictionary valueForKeyPath:@"location.coordinate.latitude"] doubleValue];
         coordinate.longitude = [[dictionary valueForKeyPath:@"location.coordinate.longitude"] doubleValue];
-        self.coordinate = coordinate;    }
+        self.coordinate = coordinate;
+        
+        self.snippet = dictionary[@"snippet_text"];
+        self.snippetImageUrl = dictionary[@"snippet_image_url"];
+    }
     
     return self;
 }

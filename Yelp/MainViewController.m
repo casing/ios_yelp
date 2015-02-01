@@ -12,6 +12,7 @@
 #import "YelpClient.h"
 #import "Business.h"
 #import "FiltersViewController.h"
+#import "DetailViewController.h"
 
 NSString * const kYelpConsumerKey = @"DB6QCDtQLZI-ErPThGa4vw";
 NSString * const kYelpConsumerSecret = @"7s-4EhTFdtRksOzYMBpdVMU4gZo";
@@ -39,6 +40,7 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
 - (void)showMap;
 - (void)hideMap;
 - (void)updateMap;
+- (void)goToDetailsPage:(int)index;
 
 @end
 
@@ -80,7 +82,7 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     // Setup up title
-    self.title = @"Yelp";
+    self.title = @"Search";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Filters"
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
@@ -133,6 +135,12 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
     cell.cellNumber = indexPath.row + 1;
     cell.business = [self getBusiness:(int)indexPath.row];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self goToDetailsPage:(int)indexPath.row];
 }
 
 #pragma mark - FiltersViewControllerDelegate methods
@@ -194,17 +202,11 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
 #pragma mark - Private methods
 
 - (void)updateMap {
-    //Get the current user location annotation.
-    id userAnnotation = self.mapView.userLocation;
-    
+
     //Remove all added annotations
     [self.mapView removeAnnotations:self.mapView.annotations];
     
-    // Add the current user location annotation again.
-    if(userAnnotation!=nil) {
-        [self.mapView addAnnotation:userAnnotation];
-    }
-
+    //Update with new annotations
     [self.mapView showAnnotations:[self getBusinesses] animated:YES];
 }
 
@@ -261,6 +263,12 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
         NSLog(@"error: %@", [error description]);
     }];
     
+}
+
+- (void)goToDetailsPage:(int)index {
+    DetailViewController *vc = [[DetailViewController alloc] init];
+    vc.business = [self getBusiness:index];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
