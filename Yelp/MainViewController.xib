@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
             <connections>
+                <outlet property="mapView" destination="d22-wo-ZdC" id="wRF-NV-yeW"/>
                 <outlet property="tableView" destination="KxX-2h-od4" id="97c-vw-9nv"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -20,13 +21,20 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d22-wo-ZdC">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </mapView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="KxX-2h-od4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CFR-h4-HmY"/>
                 <constraint firstAttribute="trailing" secondItem="KxX-2h-od4" secondAttribute="trailing" id="EoG-QZ-uWL"/>
+                <constraint firstItem="d22-wo-ZdC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="G6T-7z-lC1"/>
                 <constraint firstItem="KxX-2h-od4" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="KLj-au-Nff"/>
                 <constraint firstAttribute="bottom" secondItem="KxX-2h-od4" secondAttribute="bottom" id="KxR-nq-leT"/>
+                <constraint firstAttribute="trailing" secondItem="d22-wo-ZdC" secondAttribute="trailing" id="RWf-RJ-zI6"/>
+                <constraint firstAttribute="bottom" secondItem="d22-wo-ZdC" secondAttribute="bottom" id="ZEI-tE-zRu"/>
+                <constraint firstItem="d22-wo-ZdC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kFb-Ao-VCN"/>
             </constraints>
             <point key="canvasLocation" x="328" y="48"/>
         </view>

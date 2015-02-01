@@ -16,6 +16,7 @@
 		3E3DD7951A79F85600B69096 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E3DD7931A79F85600B69096 /* SwitchCell.xib */; };
 		3E9A03311A7B609A00F0EBF2 /* SegmentedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9A032F1A7B609A00F0EBF2 /* SegmentedCell.m */; };
 		3E9A03321A7B609A00F0EBF2 /* SegmentedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E9A03301A7B609A00F0EBF2 /* SegmentedCell.xib */; };
+		3EE25BB21A7DA04000D1431C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE25BB11A7DA04000D1431C /* MapKit.framework */; };
 		420474F618DC299500E88E07 /* YelpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F518DC299500E88E07 /* YelpClient.m */; };
 		420474FB18DC2B2100E88E07 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F918DC2B2100E88E07 /* MainViewController.m */; };
 		420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 420474FA18DC2B2100E88E07 /* MainViewController.xib */; };
@@ -59,6 +60,7 @@
 		3E9A032E1A7B609A00F0EBF2 /* SegmentedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SegmentedCell.h; sourceTree = "<group>"; };
 		3E9A032F1A7B609A00F0EBF2 /* SegmentedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SegmentedCell.m; sourceTree = "<group>"; };
 		3E9A03301A7B609A00F0EBF2 /* SegmentedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SegmentedCell.xib; sourceTree = "<group>"; };
+		3EE25BB11A7DA04000D1431C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		420474F418DC299500E88E07 /* YelpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpClient.h; sourceTree = "<group>"; };
 		420474F518DC299500E88E07 /* YelpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpClient.m; sourceTree = "<group>"; };
 		420474F818DC2B2100E88E07 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EE25BB21A7DA04000D1431C /* MapKit.framework in Frameworks */,
 				42FD6C4D18DC286B000BF2B9 /* CoreGraphics.framework in Frameworks */,
 				42FD6C4F18DC286B000BF2B9 /* UIKit.framework in Frameworks */,
 				42FD6C4B18DC286B000BF2B9 /* Foundation.framework in Frameworks */,
@@ -179,6 +182,7 @@
 		42FD6C4918DC286B000BF2B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EE25BB11A7DA04000D1431C /* MapKit.framework */,
 				42FD6C4A18DC286B000BF2B9 /* Foundation.framework */,
 				42FD6C4C18DC286B000BF2B9 /* CoreGraphics.framework */,
 				42FD6C4E18DC286B000BF2B9 /* UIKit.framework */,

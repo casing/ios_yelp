@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 codepath. All rights reserved.
 //
 
+#import <MapKit/MapKit.h>
 #import "MainViewController.h"
 #import "BusinessCell.h"
 #import "YelpClient.h"
@@ -17,9 +18,12 @@ NSString * const kYelpConsumerSecret = @"7s-4EhTFdtRksOzYMBpdVMU4gZo";
 NSString * const kYelpToken = @"C-jE7n1NLpCXxV1LbIpikQkuFDx5DYig";
 NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 
-@interface MainViewController () <UITableViewDataSource, UITableViewDelegate, FiltersViewControllerDelegate, UISearchBarDelegate>
+@interface MainViewController () <UITableViewDataSource, UITableViewDelegate,
+FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (nonatomic, strong) UIBarButtonItem *rightBarButton;
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSMutableArray *businesses;
 @property (nonatomic, strong) NSMutableArray *searchedBusinesses;
@@ -30,7 +34,11 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
 - (void)fetchBusinessesWithParams:(NSDictionary *)params offset:(int)offset;
 - (NSUInteger)getBusinessessCount;
 - (Business *)getBusiness:(int)index;
+- (NSArray *)getBusinesses;
 - (void)searchBusinessData;
+- (void)showMap;
+- (void)hideMap;
+- (void)updateMap;
 
 @end
 
@@ -77,6 +85,16 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(onFilterButton)];
+    self.rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Map"
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(onMapButton)];
+    self.navigationItem.rightBarButtonItem = self.rightBarButton;
+    
+    // MapView Setup
+    self.mapView.showsUserLocation = YES;
+    self.mapView.delegate = self;
+    [self hideMap];
     
     // UI SearchBar Setup
     self.searchBar = [UISearchBar new];
@@ -123,7 +141,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     
     [self.filters addEntriesFromDictionary:filters];
     [self fetchBusinessesWithParams:self.filters offset:0];
-    
+    [self updateMap];
 }
 
 #pragma mark - SearchBar Methods
@@ -144,7 +162,72 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     [self.tableView reloadData];
 }
 
+#pragma mark - MKMapViewDelegate Methods
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    if ([annotation isKindOfClass:[Business class]]) {
+        Business *business = annotation;
+        MKPinAnnotationView *pin = (MKPinAnnotationView *) [self.mapView dequeueReusableAnnotationViewWithIdentifier:business.name];
+        return pin;
+    }
+    return nil;
+}
+
+#pragma mark - Button actions
+
+- (void)onFilterButton {
+    FiltersViewController *vc = [[FiltersViewController alloc] init];
+    vc.delegate = self;
+    
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    
+    [self presentViewController:nvc animated:YES completion:nil];
+}
+
+- (void)onMapButton {
+    if ([self.rightBarButton.title isEqualToString:@"Map"]) {
+        [self showMap];
+    } else if ([self.rightBarButton.title isEqualToString:@"List"]) {
+        [self hideMap];
+    }
+}
+
 #pragma mark - Private methods
+
+- (void)updateMap {
+    //Get the current user location annotation.
+    id userAnnotation = self.mapView.userLocation;
+    
+    //Remove all added annotations
+    [self.mapView removeAnnotations:self.mapView.annotations];
+    
+    // Add the current user location annotation again.
+    if(userAnnotation!=nil) {
+        [self.mapView addAnnotation:userAnnotation];
+    }
+
+    [self.mapView showAnnotations:[self getBusinesses] animated:YES];
+}
+
+- (void)showMap {
+    [self updateMap];
+    [self.mapView setHidden:NO];
+    [self.tableView setHidden:YES];
+    [self.rightBarButton setTitle:@"List"];
+}
+
+- (void)hideMap {
+    [self.mapView setHidden:YES];
+    [self.tableView setHidden:NO];
+    [self.rightBarButton setTitle:@"Map"];
+}
+
+- (NSArray *)getBusinesses {
+    if ([self.searchBar.text length] == 0) {
+        return self.businesses;
+    } else {
+        return self.searchedBusinesses;
+    }
+}
 
 - (NSUInteger)getBusinessessCount {
     if ([self.searchBar.text length] == 0) {
@@ -177,16 +260,7 @@ NSString * const kYelpTokenSecret = @"237Knry48skM4MSQDthMpHEbYyc";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@", [error description]);
     }];
-
-}
-
-- (void)onFilterButton {
-    FiltersViewController *vc = [[FiltersViewController alloc] init];
-    vc.delegate = self;
     
-    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
-    
-    [self presentViewController:nvc animated:YES completion:nil];
 }
 
 @end
