@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZf-8B-aht">
-                        <rect key="frame" x="32" y="11" width="42" height="21"/>
+                        <rect key="frame" x="24" y="11" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -26,6 +26,7 @@
                             <constraint firstAttribute="width" constant="22" id="V3B-pc-L8w"/>
                             <constraint firstAttribute="height" constant="22" id="fVU-Hn-eXK"/>
                         </constraints>
+                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <state key="normal">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -39,7 +40,7 @@
                     <constraint firstAttribute="trailing" secondItem="Ijo-pK-liw" secondAttribute="trailing" constant="8" id="c29-0w-SAW"/>
                     <constraint firstItem="Ijo-pK-liw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LZf-8B-aht" secondAttribute="trailing" constant="8" id="gfR-3C-oFO"/>
                     <constraint firstItem="LZf-8B-aht" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="mL9-yo-lcX"/>
-                    <constraint firstItem="LZf-8B-aht" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="vNv-2X-xWs"/>
+                    <constraint firstItem="LZf-8B-aht" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="vNv-2X-xWs"/>
                     <constraint firstItem="LZf-8B-aht" firstAttribute="centerY" secondItem="Ijo-pK-liw" secondAttribute="centerY" id="zds-Tn-iZz"/>
                 </constraints>
             </tableViewCellContentView>

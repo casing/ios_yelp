@@ -135,7 +135,7 @@ static NSInteger SEE_ALL_SIZE = 4;
             SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
             cell.delegate = self;
             cell.titleLabel.text = @"Offering a Deal";
-            cell.on = self.deal;
+            [cell setOn:self.deal animated:YES];
             return cell;
         }
         case 1://Distance
@@ -144,7 +144,7 @@ static NSInteger SEE_ALL_SIZE = 4;
                 SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
                 cell.delegate = self;
                 cell.titleLabel.text = self.distances[indexPath.row][@"label"];
-                cell.on = (self.distance == indexPath.row?YES:NO);
+                [cell setOn:(self.distance == indexPath.row?YES:NO) animated:YES];
                 return cell;
             } else {
                 PullDownCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PullDownCell" forIndexPath:indexPath];
@@ -167,7 +167,7 @@ static NSInteger SEE_ALL_SIZE = 4;
             SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
             cell.delegate = self;
             cell.titleLabel.text = self.categories[indexPath.row][@"name"];
-            cell.on = (indexPath.row == self.categoryIndex);
+            [cell setOn:(indexPath.row == self.categoryIndex) animated:YES];
             return cell;
         }
         case 4://Category Filters
@@ -180,7 +180,7 @@ static NSInteger SEE_ALL_SIZE = 4;
                 cell.delegate = self;
                 NSArray *categoryFilterArray = self.categoryFilters[self.categoryIndex];
                 cell.titleLabel.text = categoryFilterArray[indexPath.row][@"name"];
-                cell.on = [self.selectedCategories containsObject:categoryFilterArray[indexPath.row]];
+                [cell setOn:[self.selectedCategories containsObject:categoryFilterArray[indexPath.row]] animated:YES];
                 return cell;
             }
         }
@@ -212,6 +212,7 @@ static NSInteger SEE_ALL_SIZE = 4;
         } else {
             self.categoryIndex = 0;
         }
+        [self.selectedCategories removeAllObjects];
         [self.tableView reloadData];
     } else if (indexPath.section == 4) {
         NSArray *categoryFilterArray = self.categoryFilters[self.categoryIndex];

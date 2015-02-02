@@ -151,6 +151,7 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
 
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
     
+    [self.filters removeAllObjects];
     [self.filters addEntriesFromDictionary:filters];
     [self fetchBusinessesWithParams:self.filters offset:0];
     [self updateMap];

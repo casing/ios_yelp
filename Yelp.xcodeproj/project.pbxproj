@@ -23,6 +23,7 @@
 		3EE25BBC1A7ED11F00D1431C /* SeeAllCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE25BBA1A7ED11F00D1431C /* SeeAllCell.xib */; };
 		3EE25BC01A7EDD8800D1431C /* PullDownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE25BBE1A7EDD8800D1431C /* PullDownCell.m */; };
 		3EE25BC11A7EDD8800D1431C /* PullDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE25BBF1A7EDD8800D1431C /* PullDownCell.xib */; };
+		3EE25BC51A7F576100D1431C /* UIImageView+FadeNetworkImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE25BC41A7F576100D1431C /* UIImageView+FadeNetworkImage.m */; };
 		420474F618DC299500E88E07 /* YelpClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F518DC299500E88E07 /* YelpClient.m */; };
 		420474FB18DC2B2100E88E07 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 420474F918DC2B2100E88E07 /* MainViewController.m */; };
 		420474FC18DC2B2100E88E07 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 420474FA18DC2B2100E88E07 /* MainViewController.xib */; };
@@ -76,6 +77,8 @@
 		3EE25BBD1A7EDD8800D1431C /* PullDownCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownCell.h; sourceTree = "<group>"; };
 		3EE25BBE1A7EDD8800D1431C /* PullDownCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownCell.m; sourceTree = "<group>"; };
 		3EE25BBF1A7EDD8800D1431C /* PullDownCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PullDownCell.xib; sourceTree = "<group>"; };
+		3EE25BC31A7F576100D1431C /* UIImageView+FadeNetworkImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+FadeNetworkImage.h"; sourceTree = "<group>"; };
+		3EE25BC41A7F576100D1431C /* UIImageView+FadeNetworkImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+FadeNetworkImage.m"; sourceTree = "<group>"; };
 		420474F418DC299500E88E07 /* YelpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpClient.h; sourceTree = "<group>"; };
 		420474F518DC299500E88E07 /* YelpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpClient.m; sourceTree = "<group>"; };
 		420474F818DC2B2100E88E07 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -158,6 +161,15 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		3EE25BC21A7F573D00D1431C /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				3EE25BC31A7F576100D1431C /* UIImageView+FadeNetworkImage.h */,
+				3EE25BC41A7F576100D1431C /* UIImageView+FadeNetworkImage.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		420474F318DC297600E88E07 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +231,7 @@
 		42FD6C5018DC286B000BF2B9 /* Yelp */ = {
 			isa = PBXGroup;
 			children = (
+				3EE25BC21A7F573D00D1431C /* Categories */,
 				3E3DD77D1A79489B00B69096 /* Models */,
 				420474F318DC297600E88E07 /* API */,
 				3E3DD7811A79503500B69096 /* Views */,
@@ -403,6 +416,7 @@
 				3E9A03311A7B609A00F0EBF2 /* SegmentedCell.m in Sources */,
 				3EE25BBB1A7ED11F00D1431C /* SeeAllCell.m in Sources */,
 				3E3DD7801A7948B700B69096 /* Business.m in Sources */,
+				3EE25BC51A7F576100D1431C /* UIImageView+FadeNetworkImage.m in Sources */,
 				42FD6C5B18DC286B000BF2B9 /* AppDelegate.m in Sources */,
 				3EE25BB61A7DB8DA00D1431C /* DetailViewController.m in Sources */,
 				42FD6C5718DC286B000BF2B9 /* main.m in Sources */,

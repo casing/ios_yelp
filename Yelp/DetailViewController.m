@@ -8,7 +8,7 @@
 
 #import <MapKit/MapKit.h>
 #import "DetailViewController.h"
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+FadeNetworkImage.h"
 
 @interface DetailViewController () <MKMapViewDelegate>
 
@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *snippetImageView;
 @property (weak, nonatomic) IBOutlet UILabel *snippetLabel;
 
+- (NSString *)buildAddressLabel;
+
 @end
 
 @implementation DetailViewController
@@ -32,14 +34,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.thumbnailImageView setImageWithURL:[NSURL URLWithString:self.business.imageUrl]];
+    [self.thumbnailImageView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.nameLabel.text = self.business.name;
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
-    [self.ratingImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl]];
+    [self.ratingImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.numberOfReviewsLabel.text = [NSString stringWithFormat:@"%ld Reviews", self.business.numReviews];
-    self.addressLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", self.business.address, self.business.city, self.business.stateCode, self.business.neighborhoods];
+    self.addressLabel.text = [self buildAddressLabel];
     self.categoryLabel.text = self.business.categories;
-    [self.snippetImageView setImageWithURL:[NSURL URLWithString:self.business.snippetImageUrl]];
+    [self.snippetImageView setImageWithURL:[NSURL URLWithString:self.business.snippetImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.snippetLabel.text = self.business.snippet;
     
     // MapView Setup
@@ -63,6 +65,25 @@
         return pin;
     }
     return nil;
+}
+
+#pragma mark - Private Methods
+
+- (NSString *)buildAddressLabel {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    if (self.business.address) {
+        [array addObject:self.business.address];
+    }
+    if (self.business.city) {
+        [array addObject:self.business.city];
+    }
+    if (self.business.stateCode) {
+        [array addObject:self.business.stateCode];
+    }
+    if (self.business.neighborhoods) {
+        [array addObject:self.business.neighborhoods];
+    }
+    return [array componentsJoinedByString:@", "];
 }
 
 @end

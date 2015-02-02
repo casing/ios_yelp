@@ -21,6 +21,7 @@
                             <segment title="Distance"/>
                             <segment title="Highest Rated"/>
                         </segments>
+                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
                             <action selector="valueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="zq7-ew-ddg"/>
                         </connections>

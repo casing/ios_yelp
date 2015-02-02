@@ -7,7 +7,7 @@
 //
 
 #import "BusinessCell.h"
-#import "UIImageView+AFNetworking.h"
+#import "UIImageView+FadeNetworkImage.h"
 
 @interface BusinessCell ()
 
@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
+
+- (NSString *)buildAddressLabel;
 
 @end
 
@@ -43,12 +45,12 @@
 - (void)setBusiness:(Business *)business {
     _business = business;
     
-    [self.thumbnailView setImageWithURL:[NSURL URLWithString:self.business.imageUrl]];
+    [self.thumbnailView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.nameLabel.text = [NSString stringWithFormat:@"%ld. %@", self.cellNumber, self.business.name];
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
-    [self.ratingsImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl]];
+    [self.ratingsImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.ratingLabel.text = [NSString stringWithFormat:@"%ld Reviews", self.business.numReviews];
-    self.addressLabel.text = [NSString stringWithFormat:@"%@, %@", self.business.address, self.business.neighborhoods];
+    self.addressLabel.text = [self buildAddressLabel];
     self.categoryLabel.text = self.business.categories;
 }
 
@@ -59,6 +61,18 @@
     // But was this fix in the latest version?
     self.nameLabel.preferredMaxLayoutWidth = self.nameLabel.frame.size.width;
     
+}
+
+#pragma mark - Private Methods
+- (NSString *)buildAddressLabel {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    if (self.business.address) {
+        [array addObject:self.business.address];
+    }
+    if (self.business.neighborhoods) {
+        [array addObject:self.business.neighborhoods];
+    }
+    return [array componentsJoinedByString:@", "];
 }
 
 @end
