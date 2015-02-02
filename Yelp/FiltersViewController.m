@@ -10,14 +10,17 @@
 #import "SwitchCell.h"
 #import "SegmentedCell.h"
 #import "SeeAllCell.h"
+#import "PullDownCell.h"
 
-@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate, SegmentedCellDelegate>
+@interface FiltersViewController () <UITableViewDataSource, UITableViewDelegate,
+SwitchCellDelegate, SegmentedCellDelegate, PullDownCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, readonly) NSDictionary *filters;
 @property (nonatomic, strong) NSMutableSet *selectedCategories;
 @property (nonatomic, strong) NSArray *sectionTitles;
 
+@property (nonatomic, strong) NSArray *distances;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *categoryFilters;
 @property (nonatomic) NSInteger distance;
@@ -25,7 +28,9 @@
 @property (nonatomic) BOOL deal;
 @property (nonatomic) NSInteger categoryIndex;
 @property (nonatomic) BOOL seeAll;
+@property (nonatomic) BOOL expandDistances;
 
+- (void)initDistances;
 - (void)initCategories;
 - (void)initCategoryFilters;
 
@@ -43,7 +48,9 @@ static NSInteger SEE_ALL_SIZE = 4;
         self.sortMode = -1;
         self.categoryIndex = 0;
         self.seeAll = false;
+        self.expandDistances = false;
         self.selectedCategories = [NSMutableSet set];
+        [self initDistances];
         [self initCategories];
         [self initCategoryFilters];
     }
@@ -74,6 +81,7 @@ static NSInteger SEE_ALL_SIZE = 4;
     [self.tableView registerNib:[UINib nibWithNibName:@"SwitchCell" bundle:nil] forCellReuseIdentifier:@"SwitchCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"SegmentedCell" bundle:nil] forCellReuseIdentifier:@"SegmentedCell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"SeeAllCell" bundle:nil] forCellReuseIdentifier:@"SeeAllCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PullDownCell" bundle:nil] forCellReuseIdentifier:@"PullDownCell"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,9 +97,16 @@ static NSInteger SEE_ALL_SIZE = 4;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-        case 1:
         case 2:
             return 1;
+        case 1:
+        {
+            if (self.expandDistances) {
+                return self.distances.count;
+            } else {
+                return 1;
+            }
+        }
         case 3:
             return self.categories.count;
         case 4:
@@ -125,12 +140,18 @@ static NSInteger SEE_ALL_SIZE = 4;
         }
         case 1://Distance
         {
-            SegmentedCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SegmentedCell" forIndexPath:indexPath];
-            [cell.segmentedControl setTitle:@"5 KM" forSegmentAtIndex:0];
-            [cell.segmentedControl setTitle:@"25 KM" forSegmentAtIndex:1];
-            [cell.segmentedControl setTitle:@"40 KM" forSegmentAtIndex:2];
-            cell.delegate = self;
-            return cell;
+            if (self.expandDistances) {
+                SwitchCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell" forIndexPath:indexPath];
+                cell.delegate = self;
+                cell.titleLabel.text = self.distances[indexPath.row][@"label"];
+                cell.on = (self.distance == indexPath.row?YES:NO);
+                return cell;
+            } else {
+                PullDownCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PullDownCell" forIndexPath:indexPath];
+                cell.delegate = self;
+                cell.nameLabel.text = self.distances[self.distance][@"label"];
+                return cell;
+            }
         }
         case 2://Sort By
         {
@@ -181,7 +202,11 @@ static NSInteger SEE_ALL_SIZE = 4;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:switchCell];
     if (indexPath.section == 0) {
         self.deal = value;
-    } else if(indexPath.section == 3) {
+    } else if (indexPath.section == 1) {
+        self.distance = indexPath.row;
+        self.expandDistances = NO;
+        [self.tableView reloadData];
+    } else if (indexPath.section == 3) {
         if (value) {
             self.categoryIndex = indexPath.row;
         } else {
@@ -201,24 +226,15 @@ static NSInteger SEE_ALL_SIZE = 4;
 #pragma mark - SegmentedCellDelegate Methods
 - (void)segmentedCell:(SegmentedCell *)segmentedCell didValueChanged:(int)index {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:segmentedCell];
-    if (indexPath.section == 1) { //Distance
-        switch (index) {
-            case 0:
-                self.distance = 5000; //5 KM
-                break;
-            case 1:
-                self.distance = 25000; //25 KM
-                break;
-            case 2:
-                self.distance = 40000; //40 KM
-                break;
-            default:
-                self.distance = 0;
-                break;
-        }
-    } else if (indexPath.section == 2) { //Sort By
+    if (indexPath.section == 2) { //Sort By
         self.sortMode = index;
     }
+}
+
+#pragma mark - PullDownCellDelegate Method
+- (void)onPullDown:(PullDownCell *)cell {
+    self.expandDistances = YES;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private Methods
@@ -232,7 +248,8 @@ static NSInteger SEE_ALL_SIZE = 4;
     
     // Distance
     if (self.distance > 0) {
-        [filters setObject:[NSNumber numberWithInt:(int)self.distance] forKey:@"radius_filter"];
+        NSNumber* d = (NSNumber *)(self.distances[self.distance][@"value"]);
+        [filters setObject:d forKey:@"radius_filter"];
     }
     
     // Sort
@@ -265,6 +282,13 @@ static NSInteger SEE_ALL_SIZE = 4;
 - (void)onSearchButton {
     [self.delegate filtersViewController:self didChangeFilters:self.filters];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)initDistances {
+    self.distances =
+    @[@{@"label":@"5 KM", @"value":@5000},
+      @{@"label":@"25 KM", @"value":@25000},
+      @{@"label":@"40 KM", @"value":@40000}];
 }
 
 - (void)initCategories {

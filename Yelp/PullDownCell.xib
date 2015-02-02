@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="PullDownCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZf-8B-aht">
+                        <rect key="frame" x="32" y="11" width="42" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ijo-pK-liw">
+                        <rect key="frame" x="290" y="11" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="V3B-pc-L8w"/>
+                            <constraint firstAttribute="height" constant="22" id="fVU-Hn-eXK"/>
+                        </constraints>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="onButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="eBf-k3-AaY"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="LZf-8B-aht" secondAttribute="bottom" constant="11.5" id="Vzb-H0-Rjp"/>
+                    <constraint firstAttribute="trailing" secondItem="Ijo-pK-liw" secondAttribute="trailing" constant="8" id="c29-0w-SAW"/>
+                    <constraint firstItem="Ijo-pK-liw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LZf-8B-aht" secondAttribute="trailing" constant="8" id="gfR-3C-oFO"/>
+                    <constraint firstItem="LZf-8B-aht" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="mL9-yo-lcX"/>
+                    <constraint firstItem="LZf-8B-aht" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="32" id="vNv-2X-xWs"/>
+                    <constraint firstItem="LZf-8B-aht" firstAttribute="centerY" secondItem="Ijo-pK-liw" secondAttribute="centerY" id="zds-Tn-iZz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="nameLabel" destination="LZf-8B-aht" id="w6B-yr-fqD"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

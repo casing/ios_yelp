@@ -32,6 +32,9 @@
         [allParameters addEntriesFromDictionary:params];
     }
     [allParameters setObject:[NSNumber numberWithInt:offset] forKey:@"offset"];
+    for (NSString * key in [allParameters allKeys]) {
+        NSLog(@"Key: %@, Value: %@", key, allParameters[key]);
+    };
     return [self GET:@"search" parameters:allParameters success:success failure:failure];
 }
 
