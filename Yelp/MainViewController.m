@@ -62,6 +62,10 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
         
         // Fetch initial Business list
         [self fetchBusinessesWithParams:self.filters offset:0];
+        
+        // UINavigationBar Setup
+        [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:200.0/255 green:11.0/255 blue:5.0/255 alpha:1.0]];
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     }
     return self;
 }
