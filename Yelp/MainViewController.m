@@ -147,6 +147,11 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
     [self goToDetailsPage:(int)indexPath.row];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
 #pragma mark - FiltersViewControllerDelegate methods
 
 - (void)filtersViewController:(FiltersViewController *)filtersViewController didChangeFilters:(NSDictionary *)filters {
