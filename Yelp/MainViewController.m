@@ -13,6 +13,7 @@
 #import "Business.h"
 #import "FiltersViewController.h"
 #import "DetailViewController.h"
+#import "SVProgressHUD.h"
 
 NSString * const kYelpConsumerKey = @"DB6QCDtQLZI-ErPThGa4vw";
 NSString * const kYelpConsumerSecret = @"7s-4EhTFdtRksOzYMBpdVMU4gZo";
@@ -61,6 +62,7 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
         [self.filters setObject:@"restaurants" forKey:@"term"];
         
         // Fetch initial Business list
+        [SVProgressHUD show];
         [self fetchBusinessesWithParams:self.filters offset:0];
         
         // UINavigationBar Setup
@@ -268,6 +270,7 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
         
         [self.businesses addObjectsFromArray:[Business businessesWithDictionaries:businessDictionaries]];
         [self.tableRefreshControl endRefreshing];
+        [SVProgressHUD dismiss];
         [self.tableView reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@", [error description]);
