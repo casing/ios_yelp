@@ -34,14 +34,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.thumbnailImageView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+    if (self.business.imageUrl) {
+        [self.thumbnailImageView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+    } else {
+        [self.thumbnailImageView setImage:[UIImage imageNamed:@"camera.png"]];
+    }
+    
     self.nameLabel.text = self.business.name;
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
     [self.ratingImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
     self.numberOfReviewsLabel.text = [NSString stringWithFormat:@"%ld Reviews", self.business.numReviews];
     self.addressLabel.text = [self buildAddressLabel];
     self.categoryLabel.text = self.business.categories;
-    [self.snippetImageView setImageWithURL:[NSURL URLWithString:self.business.snippetImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+    
+    if (self.business.snippetImageUrl) {
+        [self.snippetImageView setImageWithURL:[NSURL URLWithString:self.business.snippetImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+    } else {
+        [self.snippetImageView setImage:[UIImage imageNamed:@"camera.png"]];
+    }
+    
     self.snippetLabel.text = self.business.snippet;
     
     // MapView Setup
