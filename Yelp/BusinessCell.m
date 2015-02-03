@@ -46,14 +46,14 @@
     _business = business;
     
     if (self.business.imageUrl) {
-        [self.thumbnailView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+        [self.thumbnailView setImageWithURL:[NSURL URLWithString:self.business.imageUrl] withPlaceHolderURL:nil withFadeDuration:0.0];
     } else {
         [self.thumbnailView setImage:[UIImage imageNamed:@"camera.png"]];
     }
     
     self.nameLabel.text = [NSString stringWithFormat:@"%ld. %@", self.cellNumber, self.business.name];
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", self.business.distance];
-    [self.ratingsImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl] withPlaceHolderURL:nil withFadeDuration:2.0];
+    [self.ratingsImageView setImageWithURL:[NSURL URLWithString:self.business.ratingsImageUrl] withPlaceHolderURL:nil withFadeDuration:0.0];
     self.ratingLabel.text = [NSString stringWithFormat:@"%ld Reviews", self.business.numReviews];
     self.addressLabel.text = [self buildAddressLabel];
     self.categoryLabel.text = self.business.categories;

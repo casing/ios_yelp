@@ -171,8 +171,9 @@ FiltersViewControllerDelegate, UISearchBarDelegate, MKMapViewDelegate>
     // TODO: We need to add a proper filtering for a list of Business Objects
     NSPredicate *namePredicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@", self.searchBar.text];
     NSPredicate *addressPredicate = [NSPredicate predicateWithFormat:@"SELF.address contains[c] %@", self.searchBar.text];
+    NSPredicate *neighborhoodsPredicate = [NSPredicate predicateWithFormat:@"SELF.neighborhoods contains[c] %@", self.searchBar.text];
     NSPredicate *categoriesPredicate = [NSPredicate predicateWithFormat:@"SELF.categories contains[c] %@", self.searchBar.text];
-    NSArray *predicates = [NSArray arrayWithObjects:namePredicate, addressPredicate, categoriesPredicate, nil];
+    NSArray *predicates = [NSArray arrayWithObjects:namePredicate, addressPredicate, neighborhoodsPredicate, categoriesPredicate, nil];
     NSPredicate *predicate = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
     self.searchedBusinesses = [NSMutableArray arrayWithArray:[self.businesses filteredArrayUsingPredicate:predicate]];
 }
